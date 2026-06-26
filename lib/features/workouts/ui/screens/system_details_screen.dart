@@ -11,6 +11,7 @@ class SystemDetailsScreen extends StatefulWidget {
   final double width;
   final double height;
   final String? name;
+
   final String? description;
   final int? systemId;
   const SystemDetailsScreen({
@@ -114,8 +115,8 @@ class _SystemDetailsScreenState extends State<SystemDetailsScreen>
             ),
           ];
         },
-        // ✅ محتوى الـ ListView بتاع الأيام (التصميم القديم كان محتاج تنظيم)
-        body: SystemDetailsBody(systemId: widget.systemId),
+
+        body: SystemDetailsBody(systemId: widget.systemId, image: widget.image),
       ),
     );
   }

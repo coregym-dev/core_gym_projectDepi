@@ -10,18 +10,17 @@ class WorkoutDayCubit extends Cubit<WorkoutDayState> {
 
   WorkoutDayCubit(this.workoutRepository) : super(WorkoutDayInitial());
 
-  List<WorkoutDayModel> cachedDays = [];
-
+  final Map<int, List<WorkoutDayModel>> cache = {};
   Future fetchWorkoutDay(int systemId) async {
     try {
-      if (cachedDays.isNotEmpty) {
-        emit(WorkoutDaySuccess(workoutDay: cachedDays));
+      if (cache.containsKey(systemId)) {
+        emit(WorkoutDaySuccess(workoutDay: cache[systemId]!));
         return;
       }
       emit(WorkoutDayLoad());
       final response = await workoutRepository.fetchWorkoutDays(systemId);
-      cachedDays = response;
-      emit(WorkoutDaySuccess(workoutDay: cachedDays));
+      cache[systemId] = response;
+      emit(WorkoutDaySuccess(workoutDay: response));
     } catch (e) {
       print(e.toString());
     }

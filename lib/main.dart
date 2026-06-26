@@ -1,9 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_coffee/core/services/exercise_services.dart';
+import 'package:flutter_coffee/core/services/sessions_services.dart';
 import 'package:flutter_coffee/core/services/workout_services.dart';
+import 'package:flutter_coffee/features/progress/data/index.dart';
+import 'package:flutter_coffee/features/progress/ui/cubit/create_sessions/workout_session_cubit.dart';
+import 'package:flutter_coffee/features/progress/ui/cubit/get_seesions/cubit/get_sessions_cubit.dart';
 import 'package:flutter_coffee/features/root_view.dart';
+import 'package:flutter_coffee/features/workouts/data/repositories/exercise_repo.dart';
 import 'package:flutter_coffee/features/workouts/data/repositories/workout_repo.dart';
+import 'package:flutter_coffee/features/workouts/ui/cubit/exercise_cubit.dart';
+import 'package:flutter_coffee/features/workouts/ui/cubit/my_program_cubit.dart';
 import 'package:flutter_coffee/features/workouts/ui/cubit/workout_day_cubit.dart';
+import 'package:flutter_coffee/features/workouts/ui/cubit/workout_system_cubit.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 void main() async {
@@ -21,6 +30,32 @@ void main() async {
         BlocProvider(
           create: (context) =>
               WorkoutDayCubit(WorkoutRepositoryImpl(WorkoutServices())),
+        ),
+
+        BlocProvider(
+          create: (context) =>
+              DayExercisesCubit(ExerciseRepositoryImpl(ExerciseServices())),
+        ),
+
+        BlocProvider(
+          create: (context) =>
+              WorkoutSystemCubit(WorkoutRepositoryImpl(WorkoutServices()))
+                ..fetchWorkoutSystems(),
+        ),
+
+        BlocProvider(
+          create: (context) =>
+              MyProgramCubit(ExerciseRepositoryImpl(ExerciseServices())),
+        ),
+
+        BlocProvider(
+          create: (context) =>
+              WorkoutSessionCubit(SessionRepoImpl(SessionsServices())),
+        ),
+        BlocProvider(
+          create: (context) =>
+              GetSessionsCubit(SessionRepoImpl(SessionsServices()))
+                ..fetchWorkoutHistory(),
         ),
       ],
       child: const MyApp(),

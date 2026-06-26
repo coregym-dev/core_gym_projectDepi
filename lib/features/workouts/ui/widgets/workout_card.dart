@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_coffee/core/theme/app_color.dart';
 import 'package:flutter_coffee/core/widget/custom_image.dart';
 import 'package:flutter_coffee/core/widget/custom_text.dart';
-import 'package:flutter_coffee/features/workouts/ui/screens/system_details_screen.dart';
 
 class WorkoutCard extends StatelessWidget {
   final String? image;
@@ -26,7 +26,7 @@ class WorkoutCard extends StatelessWidget {
         margin: EdgeInsets.only(bottom: 8),
         padding: const EdgeInsets.all(0),
         decoration: BoxDecoration(
-          color: const Color(0xff1A1F29),
+          color: AppColors.cardColor,
           borderRadius: BorderRadius.circular(14),
         ),
         child: Row(
@@ -62,7 +62,7 @@ class WorkoutCard extends StatelessWidget {
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
 
-                    color: Colors.white.withOpacity(.7),
+                    color: AppColors.accentColor,
                     fontSize: 15,
                   ),
                 ],

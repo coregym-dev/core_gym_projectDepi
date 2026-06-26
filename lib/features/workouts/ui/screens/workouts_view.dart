@@ -10,13 +10,9 @@ class WorkoutsView extends StatefulWidget {
   State<WorkoutsView> createState() => _WorkoutsViewState();
 }
 
-class _WorkoutsViewState extends State<WorkoutsView>
-    with AutomaticKeepAliveClientMixin {
-  @override
-  bool get wantKeepAlive => true;
+class _WorkoutsViewState extends State<WorkoutsView> {
   @override
   Widget build(BuildContext context) {
-    super.build(context);
     return Scaffold(
       backgroundColor: AppColors.backgroundColor,
       appBar: AppBar(

@@ -1,4 +1,7 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_coffee/core/theme/app_color.dart';
 
 class CustomImage extends StatelessWidget {
   final String image;
@@ -17,14 +20,30 @@ class CustomImage extends StatelessWidget {
   Widget build(BuildContext context) {
     return ClipRRect(
       borderRadius: BorderRadius.circular(radious),
-      child: Image.network(
-        image,
+      child: CachedNetworkImage(
+        imageUrl: image,
         width: width,
         height: height,
-        fit: BoxFit.fill,
-        errorBuilder: (_, __, ___) {
-          return const Icon(Icons.image_not_supported);
-        },
+        fit: BoxFit.cover,
+
+        placeholder: (context, url) => Container(
+          width: width,
+          height: height,
+          color: AppColors.dividerColor,
+          child: const Center(
+            child: CupertinoActivityIndicator(
+              animating: true,
+              color: AppColors.textSecondary,
+            ),
+          ),
+        ),
+
+        errorWidget: (context, url, error) => Container(
+          width: width,
+          height: height,
+          color: Colors.grey.shade300,
+          child: const Icon(Icons.broken_image),
+        ),
       ),
     );
   }

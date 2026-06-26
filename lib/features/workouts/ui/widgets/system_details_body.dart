@@ -4,7 +4,12 @@ import 'package:flutter_coffee/features/workouts/ui/widgets/workout_day_details.
 
 class SystemDetailsBody extends StatefulWidget {
   final int? systemId;
-  const SystemDetailsBody({super.key, required this.systemId});
+  final String image;
+  const SystemDetailsBody({
+    super.key,
+    required this.systemId,
+    required this.image,
+  });
 
   @override
   State<SystemDetailsBody> createState() => _SystemDetailsBodyState();
@@ -48,7 +53,12 @@ class _SystemDetailsBodyState extends State<SystemDetailsBody>
 
         // جلب وعرض الأيام بناءً على الـ ID
         widget.systemId != null
-            ? Expanded(child: WorkoutDayDetails(systemId: widget.systemId!))
+            ? Expanded(
+                child: WorkoutDayDetails(
+                  systemId: widget.systemId!,
+                  image: widget.image,
+                ),
+              )
             : const Center(child: CustomText(text: "Invalid System ID")),
       ],
     );

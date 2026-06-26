@@ -3,15 +3,15 @@ import 'package:flutter_coffee/core/theme/app_color.dart';
 
 class CustomBackButton extends StatelessWidget {
   final VoidCallback? onTap;
-
-  const CustomBackButton({super.key, this.onTap});
+  final double? width;
+  const CustomBackButton({super.key, this.onTap, this.width});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      // لو ممررتش دالة معينة، التلقائي بتاعه إنه بيقفل الشاشة الحالية
       onTap: onTap ?? () => Navigator.pop(context),
       child: Container(
+        width: width,
         padding: const EdgeInsets.all(10),
         decoration: BoxDecoration(
           color: AppColors.backgroundColor.withOpacity(0.7),

@@ -10,8 +10,11 @@ part 'workout_system_state.dart';
 class WorkoutSystemCubit extends Cubit<WorkoutSystemState> {
   WorkoutSystemCubit(this.workoutRepository) : super(WorkoutSystemInitial());
   WorkoutRepository workoutRepository;
+  bool isFetched = false;
   Future fetchWorkoutSystems() async {
     try {
+      if (isFetched) return;
+      isFetched = true;
       emit(WorkoutSystemLoad());
       final response = await workoutRepository.fetchWorkoutSystems();
       emit(WorkoutSystemSuccess(WorkoutModel: response));
