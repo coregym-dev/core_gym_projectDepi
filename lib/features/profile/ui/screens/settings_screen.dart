@@ -185,15 +185,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   SettingsSection(
                     title: 'Account',
                     children: [
-                      SettingsTile(
-                        title: 'Change Password',
-                        onTap: () => Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (_) => const ChangePasswordScreen(),
-                          ),
-                        ),
-                      ),
+                      SettingsTile(title: 'Change Password'),
                       SettingsTile(
                         title: 'Privacy Policy',
                         onTap: () => Navigator.push(

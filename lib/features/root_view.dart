@@ -18,8 +18,8 @@ class _RootViewState extends State<RootView> {
   int indexScreen = 0;
 
   // الخمس شاشات الخاصة بالتطبيق
-  final List<Widget> screens = [
-    const HomeView(),
+  late final List<Widget> screens = [
+    HomeView(controller: controller),
     const WorkoutsView(),
     const ExerciseView(),
     const ProgressView(),

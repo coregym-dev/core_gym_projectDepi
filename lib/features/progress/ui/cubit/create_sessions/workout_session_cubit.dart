@@ -63,9 +63,6 @@ class WorkoutSessionCubit extends Cubit<WorkoutSessionState> {
     await sessionRepo.createSession(sessions);
     totalTime = Duration.zero;
     countExrcise = 0;
-
-    print("==============================================");
-    print("done");
   }
 
   void completeExercise() {

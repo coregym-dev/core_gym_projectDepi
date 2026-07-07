@@ -23,7 +23,7 @@ class _ProgressViewState extends State<ProgressView> {
             floating: true,
             pinned: true,
             expandedHeight: 70,
-            actions: [MoreOptionsButton(firstTitle: "Clear History")],
+
             backgroundColor: AppColors.backgroundColor,
             title: const Text(
               "Workout History",

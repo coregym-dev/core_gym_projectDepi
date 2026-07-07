@@ -3,6 +3,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_coffee/core/services/exercise_services.dart';
 import 'package:flutter_coffee/core/services/sessions_services.dart';
 import 'package:flutter_coffee/core/services/workout_services.dart';
+import 'package:flutter_coffee/features/auth/data/datasources/datasource.dart';
+import 'package:flutter_coffee/features/auth/data/repositories/auth.repository_impl.dart';
+import 'package:flutter_coffee/features/auth/domain/repositories/auth.repository.dart';
+import 'package:flutter_coffee/features/auth/domain/usecases/index.dart';
+import 'package:flutter_coffee/features/auth/presentation/cubit/auth_cubit.dart';
+import 'package:flutter_coffee/features/auth/presentation/pages/login.dart';
 import 'package:flutter_coffee/features/progress/data/index.dart';
 import 'package:flutter_coffee/features/progress/ui/cubit/create_sessions/workout_session_cubit.dart';
 import 'package:flutter_coffee/features/progress/ui/cubit/get_seesions/cubit/get_sessions_cubit.dart';
@@ -54,8 +60,7 @@ void main() async {
         ),
         BlocProvider(
           create: (context) =>
-              GetSessionsCubit(SessionRepoImpl(SessionsServices()))
-                ..fetchWorkoutHistory(),
+              GetSessionsCubit(SessionRepoImpl(SessionsServices())),
         ),
       ],
       child: const MyApp(),
@@ -68,6 +73,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(debugShowCheckedModeBanner: false, home: RootView());
+    return MaterialApp(debugShowCheckedModeBanner: false, home: LoginPage());
   }
 }

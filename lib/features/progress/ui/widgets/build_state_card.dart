@@ -18,18 +18,18 @@ class BuildStateCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
+    return Flexible(
       child: Container(
         padding: const EdgeInsets.all(10),
         decoration: BoxDecoration(
-          color: AppColors.cardColor, // لون غامق شيك متناسق مع الجيم
+          color: AppColors.cardColor,
           borderRadius: BorderRadius.circular(16),
           border: Border.all(color: Colors.white10),
         ),
         child: Row(
           children: [
             CircleAvatar(
-              backgroundColor: color.withOpacity(0.1),
+              backgroundColor: color.withValues(alpha: 0.1),
               child: Icon(icon, color: color),
             ),
             const SizedBox(width: 12),
@@ -45,7 +45,7 @@ class BuildStateCard extends StatelessWidget {
                   value,
                   style: const TextStyle(
                     color: Colors.white,
-                    fontSize: 18,
+                    fontSize: 17,
                     fontWeight: FontWeight.bold,
                   ),
                 ),

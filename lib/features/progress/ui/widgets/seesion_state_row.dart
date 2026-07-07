@@ -13,8 +13,7 @@ class SessionStateRow extends StatelessWidget {
     return BlocBuilder<WorkoutSessionCubit, WorkoutSessionState>(
       builder: (context, state) {
         final cubit = context.read<WorkoutSessionCubit>();
-        Duration minutes = cubit.Time ~/ 60;
-        Duration hours = minutes ~/ 60;
+        final duration = cubit.Time;
 
         return Row(
           children: [
@@ -25,11 +24,12 @@ class SessionStateRow extends StatelessWidget {
               color: AppColors.accentColor,
             ),
 
-            const SizedBox(width: 12),
+            const SizedBox(width: 6),
 
             BuildStateCard(
               title: "Total Time",
-              value: hours.toString(),
+              value:
+                  "${duration.inHours}h ${duration.inMinutes.remainder(60)}m ${duration.inSeconds.remainder(60)}s",
               icon: Icons.timer,
               color: Colors.green,
             ),

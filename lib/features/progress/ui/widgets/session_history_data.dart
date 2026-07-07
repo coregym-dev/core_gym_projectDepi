@@ -5,8 +5,19 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_coffee/features/progress/ui/cubit/get_seesions/cubit/get_sessions_cubit.dart';
 import 'package:flutter_coffee/features/progress/ui/widgets/build_history_card.dart';
 
-class SliverWorkoutHistoryList extends StatelessWidget {
+class SliverWorkoutHistoryList extends StatefulWidget {
   const SliverWorkoutHistoryList({super.key});
+
+  @override
+  State<SliverWorkoutHistoryList> createState() =>
+      _SliverWorkoutHistoryListState();
+}
+
+class _SliverWorkoutHistoryListState extends State<SliverWorkoutHistoryList> {
+  @override
+  void initState() {
+    context.read<GetSessionsCubit>().fetchWorkoutHistory();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +40,7 @@ class SliverWorkoutHistoryList extends StatelessWidget {
               padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 16),
               child: Center(
                 child: Text(
-                  "❌ عفواً، تعذر جلب البيانات:\n${state.errorMessage}",
+                  " عفواً، تعذر جلب البيانات:\n${state.errorMessage}",
                   textAlign: TextAlign.center,
                   style: const TextStyle(color: Colors.redAccent, fontSize: 14),
                 ),
