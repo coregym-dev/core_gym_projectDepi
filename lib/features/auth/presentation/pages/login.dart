@@ -159,14 +159,6 @@ class _LoginPageState extends State<LoginPage> {
                             context.read<AuthCubit>().signInWithGoogle();
                           },
                         ),
-                        const SizedBox(width: 24),
-                        SocialLoginButton(
-                          isloading: state is AuthFacebookLoading,
-                          iconPath: 'assets/facebook.png',
-                          onTap: () {
-                            context.read<AuthCubit>().signInWithFacebook();
-                          },
-                        ),
                       ],
                     ),
                     const SizedBox(height: 16),
@@ -186,10 +178,10 @@ class _LoginPageState extends State<LoginPage> {
                               ),
                             );
                           },
-                          child: const Text(
+                          child: Text(
                             'Register',
                             style: TextStyle(
-                              color: Colors.yellowAccent,
+                              color: Theme.of(context).primaryColor,
                               fontSize: 13,
                               fontWeight: FontWeight.bold,
                             ),
@@ -213,7 +205,7 @@ class _LoginPageState extends State<LoginPage> {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     content: Text('welcome ya ${state.user.name}'),
-                    backgroundColor: Colors.green,
+                    backgroundColor: Theme.of(context).primaryColor,
                   ),
                 );
                 Navigator.pushReplacement(

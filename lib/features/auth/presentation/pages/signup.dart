@@ -13,6 +13,9 @@ import 'package:flutter_coffee/features/auth/presentation/widgets/custom_main_bu
 import 'package:flutter_coffee/features/auth/presentation/widgets/customauthfield.dart';
 import 'package:flutter_coffee/features/auth/presentation/widgets/glass_container.dart';
 import 'package:flutter_coffee/core/validator.dart';
+import 'package:flutter_coffee/core/theme/app_text_styles.dart';
+import 'package:flutter_coffee/core/theme/app_color.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
@@ -79,27 +82,26 @@ class _SignUpPageState extends State<SignUpPage> {
                   children: [
                     Image.asset(
                       'assets/Background.png',
-                      width: 100,
-                      height: 100,
+                      width: 100.w,
+                      height: 100.h,
                     ),
-                    const SizedBox(height: 16),
-                    const Text(
+                    SizedBox(height: 16.h),
+                    Text(
                       'Welcome!',
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.white,
+                      style: AppTextStyles.settingsItem.copyWith(
                         fontWeight: FontWeight.w600,
+                        color: AppColors.textPrimary,
                       ),
                     ),
-                    const SizedBox(height: 4),
-                    const Text(
+                    SizedBox(height: 4.h),
+                    Text(
                       'Please enter your details to sign in',
-                      style: TextStyle(
-                        fontSize: 13,
-                        color: Color.fromARGB(178, 255, 255, 255),
+                      style: AppTextStyles.inputLabel.copyWith(
+                        fontSize: 13.sp,
+                        color: AppColors.textSecondary,
                       ),
                     ),
-                    const SizedBox(height: 16),
+                    SizedBox(height: 16.h),
 
                     CustomAuthField(
                       controller: _usernameController,
@@ -107,14 +109,14 @@ class _SignUpPageState extends State<SignUpPage> {
                       hintText: 'username',
                       prefixIcon: Icons.person_outlined,
                     ),
-                    const SizedBox(height: 16),
+                    SizedBox(height: 16.h),
                     CustomAuthField(
                       controller: _emailController,
                       validator: Validator.validateEmail,
                       hintText: 'Email',
                       prefixIcon: Icons.email_outlined,
                     ),
-                    const SizedBox(height: 16),
+                    SizedBox(height: 16.h),
 
                     CustomAuthField(
                       controller: _passwordController,
@@ -123,7 +125,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       prefixIcon: Icons.lock_outline,
                       isPassword: true,
                     ),
-                    const SizedBox(height: 16),
+                    SizedBox(height: 16.h),
                     CustomAuthField(
                       controller: _phoneController,
                       validator: Validator.validatePhone,
@@ -131,7 +133,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       prefixIcon: Icons.phone_outlined,
                       keyboardType: TextInputType.phone,
                     ),
-                    const SizedBox(height: 16),
+                    SizedBox(height: 16.h),
 
                     CustomMainButton(
                       isLoading: state is AuthLoading,
@@ -147,13 +149,16 @@ class _SignUpPageState extends State<SignUpPage> {
                         }
                       },
                     ),
-                    const SizedBox(height: 16),
+                    SizedBox(height: 16.h),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Text(
+                        Text(
                           "have an account? ",
-                          style: TextStyle(color: Colors.white70, fontSize: 13),
+                          style: AppTextStyles.inputLabel.copyWith(
+                            fontSize: 13.sp,
+                            color: AppColors.textSecondary,
+                          ),
                         ),
                         TextButton(
                           onPressed: () {
@@ -164,11 +169,10 @@ class _SignUpPageState extends State<SignUpPage> {
                               ),
                             );
                           },
-                          child: const Text(
+                          child: Text(
                             'sign in',
-                            style: TextStyle(
-                              color: Colors.yellowAccent,
-                              fontSize: 13,
+                            style: AppTextStyles.aboutSlogan.copyWith(
+                              fontSize: 13.sp,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
