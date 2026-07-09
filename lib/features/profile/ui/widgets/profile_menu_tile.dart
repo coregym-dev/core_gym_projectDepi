@@ -31,7 +31,12 @@ class ProfileMenuTile extends StatelessWidget {
                 child: Icon(icon, size: 24, color: AppColors.textSecondary),
               ),
               const SizedBox(width: 16),
-              Expanded(child: Text(title, style: AppTextStyles.menuItem)),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  child: Text(title, style: AppTextStyles.menuItem),
+                ),
+              ),
               const Icon(
                 Icons.chevron_right,
                 size: 20,

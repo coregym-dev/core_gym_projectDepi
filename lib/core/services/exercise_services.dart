@@ -1,3 +1,4 @@
+import 'package:flutter_coffee/features/workouts/data/models/exercise_model.dart';
 import 'package:flutter_coffee/features/workouts/data/models/my_program_exercise_model.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:flutter_coffee/features/workouts/data/models/day_exercise_model.dart';
@@ -83,5 +84,16 @@ class ExerciseServices {
           .eq("program_id", id);
       await _supabase.from("my_programs").delete().eq("id", id);
     } catch (e) {}
+  }
+
+  Future<List<ExerciseModel>> getExercisesByCategory(String category) async {
+    final response = await _supabase
+        .from('exercises')
+        .select()
+        .eq('category', category);
+
+    return response
+        .map<ExerciseModel>((e) => ExerciseModel.fromJson(e))
+        .toList();
   }
 }

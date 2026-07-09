@@ -1,12 +1,12 @@
+import 'dart:io'; // تم إضافتها للتعامل مع ملف الصورة
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart'; // تم إضافة المكتبة هنا
 import 'package:flutter_coffee/core/constans/appConstants.dart';
 import 'package:flutter_coffee/core/theme/app_color.dart';
 import 'package:flutter_coffee/core/theme/app_text_styles.dart';
 import 'package:flutter_coffee/core/utils/AppValidators.dart';
 import 'package:flutter_coffee/core/utils/app_snackbars.dart';
 import 'package:flutter_coffee/core/widget/app_state.dart';
-
-import 'package:flutter_coffee/features/profile/ui/widgets/edit_profile_screen.dart';
 import 'package:flutter_coffee/features/profile/ui/widgets/gender_dropdown_field.dart';
 import 'package:flutter_coffee/features/profile/ui/widgets/labeled_input_field.dart';
 import 'package:flutter_coffee/features/profile/ui/widgets/primary_action_btn.dart';
@@ -30,6 +30,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   late String _selectedGender;
   bool _isSaving = false;
 
+  // متغيرات الـ ImagePicker
+  final ImagePicker _picker = ImagePicker();
+  File? _imageFile; // لتخزين الصورة المختارة محلياً قبل الحفظ
+
   @override
   void initState() {
     super.initState();
@@ -52,45 +56,25 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     super.dispose();
   }
 
-  Future<void> _pickDateOfBirth() async {
-    final initialDate = DateTime(1995, 5, 15);
-    final picked = await showDatePicker(
-      context: context,
-      initialDate: initialDate,
-      firstDate: DateTime(1950),
-      lastDate: DateTime.now(),
-      builder: (context, child) {
-        return Theme(
-          data: Theme.of(context).copyWith(
-            colorScheme: const ColorScheme.dark(
-              primary: AppColors.accentColor,
-              onPrimary: Colors.black,
-              surface: AppColors.cardColor,
-              onSurface: AppColors.textPrimary,
-            ),
-          ),
-          child: child!,
-        );
-      },
-    );
+  // دالة لالتقاط الصورة من الكاميرا أو المعرض
+  Future<void> _pickImage(ImageSource source) async {
+    try {
+      final XFile? pickedFile = await _picker.pickImage(
+        source: source,
+        maxWidth: 500, // تحديد أبعاد الصورة لتقليل المساحة
+        maxHeight: 500,
+        imageQuality: 85, // تقليل الجودة قليلاً للحفاظ على الأداء
+      );
 
-    if (picked != null) {
-      const months = [
-        'January',
-        'February',
-        'March',
-        'April',
-        'May',
-        'June',
-        'July',
-        'August',
-        'September',
-        'October',
-        'November',
-        'December',
-      ];
-      _dobController.text =
-          '${months[picked.month - 1]} ${picked.day}, ${picked.year}';
+      if (pickedFile != null) {
+        setState(() {
+          _imageFile = File(pickedFile.path);
+        });
+        if (!mounted) return;
+        AppSnackbars.showSuccess(context, 'تم اختيار الصورة بنجاح');
+      }
+    } catch (e) {
+      AppSnackbars.showError(context, 'حدث خطأ أثناء اختيار الصورة');
     }
   }
 
@@ -110,10 +94,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               title: const Text('Take Photo'),
               onTap: () {
                 Navigator.pop(context);
-                AppSnackbars.showInfo(
-                  context,
-                  'Camera access would open here on a device',
-                );
+                _pickImage(ImageSource.camera); // استدعاء الكاميرا
               },
             ),
             ListTile(
@@ -121,10 +102,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               title: const Text('Choose from Gallery'),
               onTap: () {
                 Navigator.pop(context);
-                AppSnackbars.showSuccess(
-                  context,
-                  'Profile photo updated locally',
-                );
+                _pickImage(ImageSource.gallery); // استدعاء المعرض
               },
             ),
           ],
@@ -147,6 +125,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         weight: _weightController.text.trim(),
         dateOfBirth: _dobController.text.trim(),
         gender: _selectedGender,
+        imageUrl: _imageFile != null
+            ? _imageFile!.path
+            : AppState.instance.profile.imageUrl,
       ),
     );
 
@@ -174,17 +155,23 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               children: [
                 const ProfileScreenHeader(title: 'Edit Profile'),
                 const SizedBox(height: 32),
+
+                // تعديل هنا: إذا كانت هناك صورة جديدة مختارة، نعرضها، وإلا نعرض الافتراضية
                 ProfileAvatar(
-                  imageUrl: profile.imageUrl,
+                  imageUrl: _imageFile != null
+                      ? _imageFile!.path
+                      : profile.imageUrl,
                   size: AppConstants.editProfileAvatarSize,
                   showCameraBadge: true,
                   onCameraTap: _showPhotoOptions,
+                  // تنبيه: تأكد أن ويدجت ProfileAvatar لديك تدعم التعامل مع مسار ملف محلي (File Path)
+                  // إذا كانت الصورة تبدأ بـ 'assets/' أو رابط ويب، فقد تحتاج لتعديل الـ ProfileAvatar من الداخل لتستقبل File أيضاً.
                 ),
+
                 const SizedBox(height: 32),
                 LabeledInputField(
                   label: 'Full Name',
                   controller: _fullNameController,
-                  //  validator: AppValidators.fullName,
                 ),
                 const SizedBox(height: 16),
                 LabeledInputField(
@@ -200,7 +187,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       child: LabeledInputField(
                         label: 'Height',
                         controller: _heightController,
-                        //    validator: AppValidators.height,
                       ),
                     ),
                     const SizedBox(width: 16),
@@ -208,18 +194,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       child: LabeledInputField(
                         label: 'Weight',
                         controller: _weightController,
-                        //  validator: AppValidators.weight,
                       ),
                     ),
                   ],
-                ),
-                const SizedBox(height: 16),
-                LabeledInputField(
-                  label: 'Date of Birth',
-                  controller: _dobController,
-                  readOnly: true,
-                  onTap: _pickDateOfBirth,
-                  //     validator: AppValidators.dateOfBirth,
                 ),
                 const SizedBox(height: 16),
                 GenderDropdownField(

@@ -56,7 +56,7 @@ class _GetDataTabbarState extends State<GetDataTabbar> {
                       exerciseName: exercise.name,
                       videoUrl: exercise.videoUrl ?? "",
                       reps: exercise.defaultReps ?? "",
-                      restSeconds: exercise.default_rest.toString(),
+                      restSeconds: exercise.defaultRest.toString(),
                       sets: exercise.defaultSets.toString(),
                       desc: exercise.description ?? "",
                       image: exercise.imageUrl ?? "",

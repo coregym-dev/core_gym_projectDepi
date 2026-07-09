@@ -40,11 +40,9 @@ void initAuthDependencies() {
   sl.registerLazySingleton(() => ResendVerificationEmailUseCase(sl()));
   sl.registerLazySingleton(() => SignInWithEmailAndPasswordUseCase(sl()));
   sl.registerLazySingleton(() => SignInWithGoogleUseCase(sl()));
-  sl.registerLazySingleton(() => SignInWithFacebookUseCase(sl()));
+
   sl.registerLazySingleton(() => ResetPasswordUseCase(sl()));
   sl.registerLazySingleton(() => SignOutUseCase(sl()));
 
-  sl.registerFactory(
-    () => AuthCubit(sl(), sl(), sl(), sl(), sl(), sl(), sl(), sl()),
-  );
+  sl.registerFactory(() => AuthCubit(sl(), sl(), sl(), sl(), sl(), sl(), sl()));
 }

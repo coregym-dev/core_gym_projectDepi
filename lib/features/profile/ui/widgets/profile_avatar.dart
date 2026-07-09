@@ -2,10 +2,9 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_coffee/core/constans/appConstants.dart';
 import 'package:flutter_coffee/core/theme/app_color.dart';
-import 'package:flutter_coffee/core/theme/app_text_styles.dart';
 
 class ProfileAvatar extends StatelessWidget {
-  final String imageUrl;
+  final String? imageUrl;
   final double size;
   final bool showCameraBadge;
   final VoidCallback? onCameraTap;
@@ -39,18 +38,20 @@ class ProfileAvatar extends StatelessWidget {
               ),
             ),
             child: ClipOval(
-              child: CachedNetworkImage(
-                imageUrl: imageUrl,
-                fit: showCameraBadge ? BoxFit.cover : BoxFit.cover,
-                alignment: showCameraBadge
-                    ? const Alignment(0, -0.5)
-                    : Alignment.center,
-                errorWidget: (_, __, ___) => const Icon(
-                  Icons.person,
-                  color: AppColors.textSecondary,
-                  size: 48,
-                ),
-              ),
+              child: imageUrl != null
+                  ? CachedNetworkImage(
+                      imageUrl: imageUrl!,
+                      fit: showCameraBadge ? BoxFit.cover : BoxFit.cover,
+                      alignment: showCameraBadge
+                          ? const Alignment(0, -0.5)
+                          : Alignment.center,
+                      errorWidget: (_, _, _) => const Icon(
+                        Icons.person,
+                        color: AppColors.textSecondary,
+                        size: 48,
+                      ),
+                    )
+                  : Icon(Icons.person),
             ),
           ),
           if (showCameraBadge)

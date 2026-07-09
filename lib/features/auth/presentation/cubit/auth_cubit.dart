@@ -2,7 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_coffee/features/auth/domain/usecases/resend_verification_email_use_case.dart';
 import 'package:flutter_coffee/features/auth/domain/usecases/reset_password_use_case.dart';
 import 'package:flutter_coffee/features/auth/domain/usecases/sign_in_with_email_and_password_use_case.dart';
-import 'package:flutter_coffee/features/auth/domain/usecases/sign_in_with_facebook_use_case.dart';
+
 import 'package:flutter_coffee/features/auth/domain/usecases/sign_in_with_google_use_case.dart';
 import 'package:flutter_coffee/features/auth/domain/usecases/sign_out_use_case.dart';
 import 'package:flutter_coffee/features/auth/domain/usecases/sign_up_with_email_and_password_use_case.dart';
@@ -16,7 +16,7 @@ class AuthCubit extends Cubit<AuthState> {
   final ResendVerificationEmailUseCase resendVerificationEmailUseCase;
   final SignInWithEmailAndPasswordUseCase signInWithEmailAndPasswordUseCase;
   final SignInWithGoogleUseCase signInWithGoogleUseCase;
-  final SignInWithFacebookUseCase signInWithFacebookUseCase;
+
   final ResetPasswordUseCase resetPasswordUseCase;
   final SignOutUseCase signOutUseCase;
 
@@ -26,7 +26,7 @@ class AuthCubit extends Cubit<AuthState> {
     this.resendVerificationEmailUseCase,
     this.signInWithEmailAndPasswordUseCase,
     this.signInWithGoogleUseCase,
-    this.signInWithFacebookUseCase,
+
     this.resetPasswordUseCase,
     this.signOutUseCase,
   ) : super(AuthInitial());
@@ -94,15 +94,6 @@ class AuthCubit extends Cubit<AuthState> {
   Future<void> signInWithGoogle() async {
     emit(AuthGoogleLoading());
     final result = await signInWithGoogleUseCase();
-    result.fold(
-      (failure) => emit(AuthError(failure.errMessage)),
-      (user) => emit(AuthLoadedWithuser(user)),
-    );
-  }
-
-  Future<void> signInWithFacebook() async {
-    emit(AuthFacebookLoading());
-    final result = await signInWithFacebookUseCase();
     result.fold(
       (failure) => emit(AuthError(failure.errMessage)),
       (user) => emit(AuthLoadedWithuser(user)),

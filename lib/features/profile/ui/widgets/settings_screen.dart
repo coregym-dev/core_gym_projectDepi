@@ -5,7 +5,6 @@ import 'package:flutter_coffee/core/utils/app_dialogs.dart';
 import 'package:flutter_coffee/core/utils/app_snackbars.dart';
 import 'package:flutter_coffee/core/utils/session_actions.dart';
 import 'package:flutter_coffee/core/widget/app_state.dart';
-import 'package:flutter_coffee/features/profile/ui/widgets/change_password_screen.dart';
 import 'package:flutter_coffee/features/profile/ui/widgets/legal_document_screen.dart';
 import 'package:flutter_coffee/features/profile/ui/widgets/logout_button.dart';
 import 'package:flutter_coffee/features/profile/ui/widgets/profile_screen.dart';
@@ -120,7 +119,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
       listenable: AppState.instance,
       builder: (context, _) {
         final settings = AppState.instance.settings;
-
         return Scaffold(
           backgroundColor: AppColors.backgroundColor,
           body: SafeArea(
@@ -132,11 +130,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const SizedBox(height: 16),
+
                   const ProfileScreenHeader(
                     title: 'Settings',
                     useLargeTitle: true,
                   ),
+
                   const SizedBox(height: 8),
+
                   SettingsSection(
                     title: 'Preferences',
                     children: [
@@ -145,35 +146,22 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         trailingText: settings.units,
                         onTap: _pickUnits,
                       ),
-                      SettingsTile(
-                        title: 'Workout Reminders',
-                        trailingText: settings.workoutRemindersLabel,
-                        onTap: _configureReminders,
-                      ),
+
                       SettingsTile(
                         title: 'Rest Timer',
                         trailingText: settings.restTimerLabel,
                         onTap: _pickRestTimer,
                       ),
-                      SettingsTile(
-                        title: 'Dark Mode',
-                        showDivider: false,
-                        trailing: SettingsToggle(
-                          value: settings.darkModeEnabled,
-                        ),
-                        onTap: () {
-                          AppState.instance.toggleDarkMode(
-                            !settings.darkModeEnabled,
-                          );
-                        },
-                      ),
                     ],
                   ),
+
                   const SizedBox(height: 32),
+
                   SettingsSection(
                     title: 'Account',
                     children: [
                       SettingsTile(title: 'Change Password'),
+
                       SettingsTile(
                         title: 'Privacy Policy',
                         onTap: () => Navigator.push(
@@ -183,6 +171,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           ),
                         ),
                       ),
+
                       SettingsTile(
                         title: 'Terms of Service',
                         showDivider: false,

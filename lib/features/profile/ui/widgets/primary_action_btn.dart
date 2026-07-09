@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_coffee/core/constans/appConstants.dart';
 import 'package:flutter_coffee/core/theme/app_color.dart';
@@ -20,7 +21,7 @@ class PrimaryActionButton extends StatelessWidget {
     return SizedBox(
       width: double.infinity,
       child: Material(
-        color: AppColors.accentColor,
+        color: const Color.fromRGBO(223, 186, 38, 1),
         borderRadius: BorderRadius.circular(AppConstants.buttonBorderRadius),
         child: InkWell(
           onTap: isLoading ? null : onPressed,
@@ -32,10 +33,7 @@ class PrimaryActionButton extends StatelessWidget {
                 ? const SizedBox(
                     height: 22,
                     width: 22,
-                    child: CircularProgressIndicator(
-                      strokeWidth: 2.5,
-                      color: Colors.black,
-                    ),
+                    child: CupertinoActivityIndicator(color: Colors.white),
                   )
                 : Text(
                     label,

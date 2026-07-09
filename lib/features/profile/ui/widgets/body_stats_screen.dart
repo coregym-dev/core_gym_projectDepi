@@ -48,8 +48,7 @@ class BodyStatsScreen extends StatelessWidget {
                   const SizedBox(height: 12),
                   _StatCard(label: 'Gender', value: profile.gender),
                   const SizedBox(height: 12),
-                  _StatCard(label: 'Date of Birth', value: profile.dateOfBirth),
-                  const SizedBox(height: 32),
+                  const SizedBox(height: 220),
                   PrimaryActionButton(
                     label: 'Edit Body Stats',
                     onPressed: () async {

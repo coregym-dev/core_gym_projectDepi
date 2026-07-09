@@ -1,5 +1,5 @@
 class AppConstants {
-  static const double screenHorizontalPadding = 24;
+  static const double screenHorizontalPadding = 10;
   static const double inputBorderRadius = 8;
   static const double buttonBorderRadius = 12;
   static const double cardBorderRadius = 16;

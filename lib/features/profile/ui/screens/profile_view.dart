@@ -42,7 +42,7 @@ class ProfileView extends StatelessWidget {
                         builder: (_) => const EditProfileScreen(),
                       ),
                     ),
-                    child: ProfileAvatar(imageUrl: profile.imageUrl),
+                    child: ProfileAvatar(imageUrl: null),
                   ),
                   const SizedBox(height: 16),
                   Text(profile.fullName, style: AppTextStyles.profileName),
@@ -69,17 +69,9 @@ class ProfileView extends StatelessWidget {
                             ),
                           ),
                         ),
+
                         const Divider(height: 1, color: AppColors.dividerColor),
-                        ProfileMenuTile(
-                          icon: Icons.check_circle_outline,
-                          title: 'Goals',
-                          onTap: () => Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (_) => const GoalsScreen(),
-                            ),
-                          ),
-                        ),
+
                         const Divider(height: 1, color: AppColors.dividerColor),
                         ProfileMenuTile(
                           icon: Icons.settings_outlined,
@@ -102,6 +94,7 @@ class ProfileView extends StatelessWidget {
                             ),
                           ),
                         ),
+
                         const Divider(height: 1, color: AppColors.dividerColor),
                         ProfileMenuTile(
                           icon: Icons.info_outline,
@@ -117,6 +110,8 @@ class ProfileView extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 40),
+
+                  /// logout ///
                   LogoutButton(
                     isProfileStyle: true,
                     onPressed: () => SessionActions.logout(context),
