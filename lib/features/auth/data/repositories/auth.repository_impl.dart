@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dartz/dartz.dart';
 import 'package:flutter_coffee/core/errors/auth_failure.dart';
 import 'package:flutter_coffee/core/errors/excepetions.dart';
@@ -226,16 +228,27 @@ class AuthRepositoryImpl implements AuthRepository {
     required String uid,
     required double height,
     required double weight,
+    required String goal,
+    required String gender,
+    File? imageFile,
   }) async {
     try {
-      await userRemoteDataSource.updateUserMetrics(uid, height, weight);
-      return right(null);
+      await userRemoteDataSource.updateUserMetrics(
+        uid,
+        height,
+        weight,
+        goal,
+        gender,
+        imageFile,
+      );
+
+      return right(null); // نجاح
     } on ServerException catch (e) {
       return left(AuthFailure(e.message));
     } on CacheException catch (e) {
       return left(AuthFailure(e.message));
     } catch (e) {
-      return left(AuthFailure(e.toString()));
+      return left(const AuthFailure('حدث خطأ غير متوقع أثناء حفظ البيانات.'));
     }
   }
 }

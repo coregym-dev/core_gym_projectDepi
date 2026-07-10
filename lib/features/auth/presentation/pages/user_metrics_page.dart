@@ -1,5 +1,7 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:flutter_coffee/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:flutter_coffee/features/auth/presentation/cubit/auth_state.dart';
 import 'package:flutter_coffee/features/auth/presentation/pages/home.dart';
@@ -18,13 +20,30 @@ class UserMetricsPage extends StatefulWidget {
 class _UserMetricsPageState extends State<UserMetricsPage> {
   final TextEditingController _weightController = TextEditingController();
   final TextEditingController _heightController = TextEditingController();
+  final TextEditingController _goalController =
+      TextEditingController(); // حقل الهدف
+
+  String? _selectedGender;
+  File? _imageFile;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   void dispose() {
     _weightController.dispose();
     _heightController.dispose();
+    _goalController.dispose();
     super.dispose();
+  }
+
+  Future<void> _pickImage() async {
+    final pickedFile = await ImagePicker().pickImage(
+      source: ImageSource.gallery,
+    );
+    if (pickedFile != null) {
+      setState(() {
+        _imageFile = File(pickedFile.path);
+      });
+    }
   }
 
   @override
@@ -35,7 +54,6 @@ class _UserMetricsPageState extends State<UserMetricsPage> {
           key: _formKey,
           child: BlocConsumer<AuthCubit, AuthState>(
             listener: (context, state) {
-              // 2. معالجة حالة الخطأ
               if (state is AuthError) {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
@@ -77,6 +95,76 @@ class _UserMetricsPageState extends State<UserMetricsPage> {
                     ),
                     const SizedBox(height: 24),
 
+                    GestureDetector(
+                      onTap: _pickImage,
+                      child: CircleAvatar(
+                        radius: 50,
+                        backgroundColor: Colors.white.withOpacity(0.2),
+                        backgroundImage: _imageFile != null
+                            ? FileImage(_imageFile!)
+                            : null,
+                        child: _imageFile == null
+                            ? const Icon(
+                                Icons.camera_alt,
+                                size: 40,
+                                color: Colors.white70,
+                              )
+                            : null,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    const Text(
+                      'Profile Picture',
+                      style: TextStyle(color: Colors.white70, fontSize: 12),
+                    ),
+                    const SizedBox(height: 24),
+
+                    // ---- حقل النوع (Gender) ----
+                    DropdownButtonFormField<String>(
+                      value: _selectedGender,
+                      decoration: InputDecoration(
+                        filled: true,
+                        fillColor: Colors.white.withOpacity(0.1),
+                        hintText: 'Select Gender',
+                        hintStyle: const TextStyle(color: Colors.white54),
+                        prefixIcon: const Icon(
+                          Icons.people_outline,
+                          color: Colors.white70,
+                        ),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide.none,
+                        ),
+                      ),
+                      dropdownColor: const Color(0xFF2C2C2C),
+                      style: const TextStyle(color: Colors.white),
+                      items: const [
+                        DropdownMenuItem(value: 'Male', child: Text('Male')),
+                        DropdownMenuItem(
+                          value: 'Female',
+                          child: Text('Female'),
+                        ),
+                      ],
+                      onChanged: (value) {
+                        setState(() {
+                          _selectedGender = value;
+                        });
+                      },
+                      validator: (value) =>
+                          value == null ? 'Please select your gender' : null,
+                    ),
+                    const SizedBox(height: 16),
+
+                    // ---- حقل الهدف (Goal) ----
+                    CustomAuthField(
+                      controller: _goalController,
+                      validator: (value) =>
+                          value!.isEmpty ? 'Enter your goal' : null,
+                      hintText: 'Your Goal (e.g., Lose weight)',
+                      prefixIcon: Icons.flag_outlined,
+                    ),
+                    const SizedBox(height: 16),
+
                     CustomAuthField(
                       controller: _weightController,
                       validator: (value) =>
@@ -110,6 +198,9 @@ class _UserMetricsPageState extends State<UserMetricsPage> {
                           context.read<AuthCubit>().updateUserMetrics(
                             weight: weight,
                             height: height,
+                            goal: _goalController.text,
+                            gender: _selectedGender!,
+                            imageFile: _imageFile,
                           );
                         }
                       },

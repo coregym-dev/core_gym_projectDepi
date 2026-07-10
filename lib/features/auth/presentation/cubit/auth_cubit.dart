@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_coffee/features/auth/domain/usecases/sign_up_with_email_and_password_use_case.dart';
 import 'package:flutter_coffee/features/auth/domain/usecases/user_metrics_use_case.dart';
@@ -132,6 +134,9 @@ class AuthCubit extends Cubit<AuthState> {
   Future<void> updateUserMetrics({
     required double weight,
     required double height,
+    required String goal,
+    required String gender,
+    File? imageFile,
   }) async {
     emit(AuthLoading());
     try {
@@ -143,10 +148,16 @@ class AuthCubit extends Cubit<AuthState> {
         },
         (user) async {
           final result = await updateMetricsUseCase(
-            UpdateMetricsParams(uid: user!.id!, height: height, weight: weight),
+            UpdateMetricsParams(
+              uid: user!.id,
+              height: height,
+              weight: weight,
+              goal: goal,
+              gender: gender,
+              imageFile: imageFile,
+            ),
           );
 
-          // 3. نتعامل مع نتيجة التحديث
           result.fold(
             (failure) => emit(AuthError(failure.errMessage)),
             (_) => emit(AuthMetricsUpdatedSuccessfully()),
@@ -154,7 +165,7 @@ class AuthCubit extends Cubit<AuthState> {
         },
       );
     } catch (e) {
-      emit(AuthError(e.toString()));
+      emit(AuthError("حدث خطأ غير متوقع أثناء الحفظ."));
     }
   }
 }

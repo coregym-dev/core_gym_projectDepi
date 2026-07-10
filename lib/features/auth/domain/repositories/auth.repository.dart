@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dartz/dartz.dart';
 import 'package:flutter_coffee/core/errors/auth_failure.dart';
 import 'package:flutter_coffee/features/auth/domain/entiteis/userentitey.dart';
@@ -28,5 +30,8 @@ abstract class AuthRepository {
     required String uid,
     required double height,
     required double weight,
+    required String goal,
+    required String gender,
+    File? imageFile,
   });
 }
