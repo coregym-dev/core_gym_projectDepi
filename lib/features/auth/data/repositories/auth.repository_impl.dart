@@ -1,13 +1,13 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter_coffee/core/errors/auth_failure.dart';
 import 'package:flutter_coffee/core/errors/excepetions.dart';
+
 import 'package:flutter_coffee/features/auth/data/datasources/auth_local_data_source.dart';
 import 'package:flutter_coffee/features/auth/data/datasources/datasource.dart';
 import 'package:flutter_coffee/features/auth/data/datasources/user_remote_data_source.dart';
 import 'package:flutter_coffee/features/auth/data/models/user_model.dart';
 import 'package:flutter_coffee/features/auth/domain/entiteis/userentitey.dart';
 import 'package:flutter_coffee/features/auth/domain/repositories/auth.repository.dart';
-
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class AuthRepositoryImpl implements AuthRepository {
@@ -148,47 +148,28 @@ class AuthRepositoryImpl implements AuthRepository {
       final user = remoteDataSource.getCurrentSupabaseUser();
 
       if (user == null) {
-        return left(AuthFailure('Login failed: No user found'));
+        return left(const AuthFailure('Login failed: No user found'));
       }
 
-      final userModel = UserModel(
-        id: user.id,
-        email: user.email ?? '',
-        name: user.userMetadata?['full_name'] ?? 'Google User',
-      );
-
-      await userRemoteDataSource.createUserProfile(userModel);
-      await localDataSource.cacheUserData(userModel);
-
-      return right(userModel);
-    } on ServerException catch (e) {
-      return left(AuthFailure(e.message));
-    } on CacheException catch (e) {
-      return left(AuthFailure(e.message));
-    } catch (e) {
-      return left(AuthFailure(e.toString()));
-    }
-  }
-
-  @override
-  Future<Either<AuthFailure, UserEntity>> signInWithFacebook() async {
-    try {
-      await remoteDataSource.signInWithFacebook();
-      final user = remoteDataSource.getCurrentSupabaseUser();
-
-      if (user == null) {
-        return left(
-          const AuthFailure(
-            'Login failed: No user found after Facebook sign-in',
-          ),
+      try {
+        final existingProfile = await userRemoteDataSource.getUserProfile(
+          user.id,
         );
-      }
-      final userModel = UserModel.fromJson(user.toJson());
-      await userRemoteDataSource.createUserProfile(userModel);
-      await localDataSource.cacheUserData(userModel);
-      await localDataSource.cacheUserData(userModel);
 
-      return right(userModel);
+        await localDataSource.cacheUserData(existingProfile);
+        return right(existingProfile);
+      } catch (e) {
+        final newUserModel = UserModel(
+          id: user.id,
+          email: user.email ?? '',
+          name: user.userMetadata?['full_name'] ?? 'Google User',
+          phone: '',
+        );
+
+        await userRemoteDataSource.createUserProfile(newUserModel);
+        await localDataSource.cacheUserData(newUserModel);
+        return right(newUserModel);
+      }
     } on ServerException catch (e) {
       return left(AuthFailure(e.message));
     } on CacheException catch (e) {
@@ -230,6 +211,24 @@ class AuthRepositoryImpl implements AuthRepository {
   Future<Either<AuthFailure, void>> signOut() async {
     try {
       await remoteDataSource.signOut();
+      return right(null);
+    } on ServerException catch (e) {
+      return left(AuthFailure(e.message));
+    } on CacheException catch (e) {
+      return left(AuthFailure(e.message));
+    } catch (e) {
+      return left(AuthFailure(e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<AuthFailure, void>> updateUserMetrics({
+    required String uid,
+    required double height,
+    required double weight,
+  }) async {
+    try {
+      await userRemoteDataSource.updateUserMetrics(uid, height, weight);
       return right(null);
     } on ServerException catch (e) {
       return left(AuthFailure(e.message));

@@ -1,6 +1,6 @@
 import 'package:dartz/dartz.dart';
-import 'package:flutter_coffee/features/auth/domain/entiteis/userentitey.dart';
 import 'package:flutter_coffee/core/errors/auth_failure.dart';
+import 'package:flutter_coffee/features/auth/domain/entiteis/userentitey.dart';
 
 abstract class AuthRepository {
   Future<Either<AuthFailure, UserEntity>> signInWithEmailAndPassword(
@@ -15,7 +15,6 @@ abstract class AuthRepository {
   );
   Future<Either<AuthFailure, void>> signOut();
   Future<Either<AuthFailure, UserEntity>> signInWithGoogle();
-  Future<Either<AuthFailure, UserEntity>> signInWithFacebook();
   Future<Either<AuthFailure, UserEntity?>> getCurrentUser();
   Future<Either<AuthFailure, void>> resetPassword(String email);
   Future<Either<AuthFailure, void>> updatePassword(String newPassword);
@@ -24,4 +23,10 @@ abstract class AuthRepository {
     required String otpCode,
   });
   Future<Either<AuthFailure, void>> resendVerificationEmail(String email);
+
+  Future<Either<AuthFailure, void>> updateUserMetrics({
+    required String uid,
+    required double height,
+    required double weight,
+  });
 }

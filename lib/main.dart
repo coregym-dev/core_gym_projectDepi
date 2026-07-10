@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_coffee/core/injection_container.dart';
 import 'package:flutter_coffee/core/services/exercise_services.dart';
 import 'package:flutter_coffee/core/services/sessions_services.dart';
 import 'package:flutter_coffee/core/services/workout_services.dart';
@@ -9,6 +10,7 @@ import 'package:flutter_coffee/features/auth/domain/repositories/auth.repository
 import 'package:flutter_coffee/features/auth/domain/usecases/index.dart';
 import 'package:flutter_coffee/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:flutter_coffee/features/auth/presentation/pages/login.dart';
+import 'package:flutter_coffee/features/auth/presentation/pages/signup.dart';
 import 'package:flutter_coffee/features/progress/data/index.dart';
 import 'package:flutter_coffee/features/progress/ui/cubit/create_sessions/workout_session_cubit.dart';
 import 'package:flutter_coffee/features/progress/ui/cubit/get_seesions/cubit/get_sessions_cubit.dart';
@@ -29,10 +31,12 @@ void main() async {
     anonKey:
         'sb_publishable_snp99wIVMB_g_Yvf1Rg2UA_paOac786', // الـ anon key اللي بتجيبه من الـ API settings
   );
+  initAuthDependencies();
 
   runApp(
     MultiBlocProvider(
       providers: [
+        BlocProvider(create: (context) => sl<AuthCubit>()),
         BlocProvider(
           create: (context) =>
               WorkoutDayCubit(WorkoutRepositoryImpl(WorkoutServices())),
@@ -73,6 +77,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(debugShowCheckedModeBanner: false, home: RootView());
+    return MaterialApp(debugShowCheckedModeBanner: false, home: SignUpPage());
   }
 }

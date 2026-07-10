@@ -3,13 +3,14 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_coffee/core/validator.dart';
 import 'package:flutter_coffee/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:flutter_coffee/features/auth/presentation/cubit/auth_state.dart';
+import 'package:flutter_coffee/features/auth/presentation/pages/login.dart';
 import 'package:flutter_coffee/features/auth/presentation/widgets/authbackground.dart';
 import 'package:flutter_coffee/features/auth/presentation/widgets/custom_main_button.dart';
 import 'package:flutter_coffee/features/auth/presentation/widgets/customauthfield.dart';
 import 'package:flutter_coffee/features/auth/presentation/widgets/glass_container.dart';
-import 'package:flutter_coffee/core/validator.dart';
 
 class ForgetPasswordPage extends StatefulWidget {
   const ForgetPasswordPage({super.key});
@@ -50,7 +51,7 @@ class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
                     backgroundColor: Colors.green,
                   ),
                 );
-                // MaterialPageRoute(builder: (context) => const LoginPage());
+                MaterialPageRoute(builder: (context) => const LoginPage());
               }
             },
             builder: (context, state) {

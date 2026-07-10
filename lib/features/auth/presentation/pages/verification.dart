@@ -3,14 +3,15 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_coffee/core/validator.dart';
 import 'package:flutter_coffee/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:flutter_coffee/features/auth/presentation/cubit/auth_state.dart';
 import 'package:flutter_coffee/features/auth/presentation/pages/home.dart';
+import 'package:flutter_coffee/features/auth/presentation/pages/user_metrics_page.dart';
 import 'package:flutter_coffee/features/auth/presentation/widgets/authbackground.dart';
 import 'package:flutter_coffee/features/auth/presentation/widgets/custom_main_button.dart';
 import 'package:flutter_coffee/features/auth/presentation/widgets/customauthfield.dart';
 import 'package:flutter_coffee/features/auth/presentation/widgets/glass_container.dart';
-import 'package:flutter_coffee/core/validator.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class VerificationPage extends StatefulWidget {
@@ -57,7 +58,12 @@ class _VerificationPageState extends State<VerificationPage> {
                 );
                 Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(builder: (context) => const HomePage()),
+                  MaterialPageRoute(
+                    builder: (context) => BlocProvider.value(
+                      value: context.read<AuthCubit>(),
+                      child: const UserMetricsPage(),
+                    ),
+                  ),
                 );
               }
             },

@@ -17,11 +17,15 @@ class AuthLoadedWithuser extends AuthState {
 
 class AuthSignUpSuccessFully extends AuthState {}
 
+class AuthMetricsSavedSuccessfully extends AuthState {}
+
 class AuthVerificationEmailSent extends AuthState {}
 
 class AuthResetPasswordSuccessfully extends AuthState {}
 
 class AuthsignOutSuccessfully extends AuthState {}
+
+class AuthMetricsUpdatedSuccessfully extends AuthState {}
 
 class AuthError extends AuthState {
   final String message;

@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_coffee/core/validator.dart';
 import 'package:flutter_coffee/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:flutter_coffee/features/auth/presentation/cubit/auth_state.dart';
 import 'package:flutter_coffee/features/auth/presentation/pages/forgetpassword.dart';
@@ -13,7 +14,6 @@ import 'package:flutter_coffee/features/auth/presentation/widgets/custom_main_bu
 import 'package:flutter_coffee/features/auth/presentation/widgets/customauthfield.dart';
 import 'package:flutter_coffee/features/auth/presentation/widgets/glass_container.dart';
 import 'package:flutter_coffee/features/auth/presentation/widgets/social_login_button.dart';
-import 'package:flutter_coffee/core/validator.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -159,6 +159,7 @@ class _LoginPageState extends State<LoginPage> {
                             context.read<AuthCubit>().signInWithGoogle();
                           },
                         ),
+                        const SizedBox(width: 24),
                       ],
                     ),
                     const SizedBox(height: 16),
@@ -178,10 +179,10 @@ class _LoginPageState extends State<LoginPage> {
                               ),
                             );
                           },
-                          child: Text(
+                          child: const Text(
                             'Register',
                             style: TextStyle(
-                              color: Theme.of(context).primaryColor,
+                              color: Colors.yellowAccent,
                               fontSize: 13,
                               fontWeight: FontWeight.bold,
                             ),
@@ -205,7 +206,7 @@ class _LoginPageState extends State<LoginPage> {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     content: Text('welcome ya ${state.user.name}'),
-                    backgroundColor: Theme.of(context).primaryColor,
+                    backgroundColor: Colors.green,
                   ),
                 );
                 Navigator.pushReplacement(

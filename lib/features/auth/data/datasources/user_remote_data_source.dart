@@ -6,6 +6,7 @@ import '../models/user_model.dart';
 abstract class UserRemoteDataSource {
   Future<void> createUserProfile(UserModel user);
   Future<UserModel> getUserProfile(String uid);
+  Future<void> updateUserMetrics(String uid, double height, double weight);
 }
 
 class UserRemoteDataSourceImpl implements UserRemoteDataSource {
@@ -21,10 +22,12 @@ class UserRemoteDataSourceImpl implements UserRemoteDataSource {
         'email': user.email,
         'full_name': user.name,
         'phone': user.phone,
+        'height': user.height,
+        'weight': user.weight,
         'created_at': DateTime.now().toIso8601String(),
       });
     } catch (e) {
-      throw ServerException('فشل في حفظ بيانات المستخدم: $e');
+      throw ServerException('Failed to save user data: $e');
     }
   }
 
@@ -39,7 +42,18 @@ class UserRemoteDataSourceImpl implements UserRemoteDataSource {
 
       return UserModel.fromJson(response);
     } catch (e) {
-      throw ServerException('فشل في جلب بيانات المستخدم: $e');
+      throw ServerException('Failed to fetch user data: $e');
+    }
+  }
+  @override
+  Future<void> updateUserMetrics(String uid, double height, double weight) async {
+    try {
+      await supabaseClient.from('users').update({
+        'height': height,
+        'weight': weight,
+      }).eq('id', uid); 
+    } catch (e) {
+      throw ServerException('Failed to update user metrics: $e');
     }
   }
 }

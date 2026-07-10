@@ -1,5 +1,7 @@
+
 import 'package:flutter_coffee/core/errors/excepetions.dart';
 import 'package:hive/hive.dart';
+
 import '../models/user_model.dart';
 
 abstract class AuthLocalDataSource {
