@@ -21,6 +21,9 @@ import 'package:flutter_coffee/features/workouts/ui/cubit/exercise_cubit.dart';
 import 'package:flutter_coffee/features/workouts/ui/cubit/my_program_cubit.dart';
 import 'package:flutter_coffee/features/workouts/ui/cubit/workout_day_cubit.dart';
 import 'package:flutter_coffee/features/workouts/ui/cubit/workout_system_cubit.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 void main() async {
@@ -32,6 +35,7 @@ void main() async {
         'sb_publishable_snp99wIVMB_g_Yvf1Rg2UA_paOac786', // الـ anon key اللي بتجيبه من الـ API settings
   );
   initAuthDependencies();
+  await Hive.initFlutter();
 
   runApp(
     MultiBlocProvider(
@@ -77,6 +81,20 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(debugShowCheckedModeBanner: false, home: SignUpPage());
+    return ScreenUtilInit(
+      designSize: const Size(
+        375,
+        812,
+      ), // دي مقاسات الشاشة في الديزاين، تقدر تغيرها لو الفيجما مقاسها مختلف
+      minTextAdapt: true,
+      splitScreenMode: true,
+      builder: (context, child) {
+        return MaterialApp(
+          debugShowCheckedModeBanner: false,
+          home: child, // هنا بيباصي الشاشة اللي إنت محددها تحت
+        );
+      },
+      child: const SignUpPage(), // الشاشة اللي التطبيق بيفتح عليها
+    );
   }
 }

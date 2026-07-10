@@ -1,4 +1,3 @@
-
 import 'package:flutter_coffee/core/errors/excepetions.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -16,7 +15,6 @@ abstract class AuthRemoteDataSource {
   });
   Future<void> resendVerificationEmail(String email);
   Future<void> signInWithGoogle();
-  Future<void> signInWithFacebook();
   Future<void> resetPassword(String email);
   Future<void> updatePassword(String newPassword);
   Future<void> signOut();
@@ -42,6 +40,8 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       email: email,
       password: password,
     );
+    print(response.user);
+    print(response.session);
     if (response.user == null) {
       throw const ServerException('Sign up failed: User is null');
     }
@@ -135,32 +135,6 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       throw ServerException(e.toString());
     }
   }
-
-  @override
-Future<void> signInWithFacebook() async {
-  try {
-    final LoginResult result = await FacebookAuth.instance.login();
-
-    if (result.status == LoginStatus.success) {
-      final AccessToken accessToken = result.accessToken!;
-      final authResponse = await supabaseClient.auth.signInWithIdToken(
-        provider: OAuthProvider.facebook,
-        idToken: accessToken.tokenString, 
-        accessToken: accessToken.tokenString,
-      );
-
-      if (authResponse.user == null) {
-        throw const ServerException('Supabase auth failed: No user returned');
-      }
-    } else if (result.status == LoginStatus.cancelled) {
-      throw const ServerException('Facebook login was cancelled by the user');
-    } else {
-      throw ServerException('Facebook login failed: ${result.message}');
-    }
-  } catch (e) {
-    throw ServerException(e.toString());
-  }
-}
 
   @override
   Future<void> resetPassword(String email) async {
