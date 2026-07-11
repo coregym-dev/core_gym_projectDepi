@@ -3,24 +3,11 @@ import 'package:flutter_coffee/core/utils/app_dialogs.dart';
 import 'package:flutter_coffee/core/utils/app_snackbars.dart';
 import 'package:flutter_coffee/core/utils/session_actions.dart';
 import 'package:flutter_coffee/core/widget/app_state.dart';
-import 'package:flutter_coffee/features/profile/ui/widgets/about_us_screen.dart';
-import 'package:flutter_coffee/features/profile/ui/widgets/body_stats_screen.dart';
-import 'package:flutter_coffee/features/profile/ui/widgets/change_password_screen.dart';
-import 'package:flutter_coffee/features/profile/ui/widgets/goals_screen.dart';
-import 'package:flutter_coffee/features/profile/ui/widgets/help_support_screen.dart';
 import 'package:flutter_coffee/features/profile/ui/widgets/legal_document_screen.dart';
 import 'package:flutter_coffee/features/profile/ui/widgets/logout_button.dart';
-import 'package:flutter_coffee/features/profile/ui/widgets/membership_badge.dart';
-import 'package:flutter_coffee/features/profile/ui/widgets/profile_menu_tile.dart';
 import 'package:flutter_coffee/features/profile/ui/widgets/profile_screen.dart';
-import 'package:flutter_coffee/features/profile/ui/widgets/settings_screen.dart';
-
 import 'package:flutter_coffee/core/constans/appConstants.dart';
 import 'package:flutter_coffee/core/theme/app_color.dart';
-import 'package:flutter_coffee/core/theme/app_text_styles.dart';
-import 'package:flutter_coffee/features/profile/ui/widgets/edit_profile_screen.dart';
-
-import 'package:flutter_coffee/features/profile/ui/widgets/profile_avatar.dart';
 import 'package:flutter_coffee/features/profile/ui/widgets/settings_section.dart';
 import 'package:flutter_coffee/features/profile/ui/widgets/settings_tile.dart';
 
@@ -132,7 +119,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
       listenable: AppState.instance,
       builder: (context, _) {
         final settings = AppState.instance.settings;
-
         return Scaffold(
           backgroundColor: AppColors.backgroundColor,
           body: SafeArea(
@@ -167,25 +153,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         trailingText: settings.restTimerLabel,
                         onTap: _pickRestTimer,
                       ),
-                      SettingsTile(
-                        title: 'Dark Mode',
-                        showDivider: false,
-                        trailing: SettingsToggle(
-                          value: settings.darkModeEnabled,
-                        ),
-                        onTap: () {
-                          AppState.instance.toggleDarkMode(
-                            !settings.darkModeEnabled,
-                          );
-                        },
-                      ),
                     ],
                   ),
                   const SizedBox(height: 32),
                   SettingsSection(
                     title: 'Account',
                     children: [
-                      SettingsTile(title: 'Change Password'),
                       SettingsTile(
                         title: 'Privacy Policy',
                         onTap: () => Navigator.push(

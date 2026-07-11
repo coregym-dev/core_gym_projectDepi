@@ -43,7 +43,7 @@ void initAuthDependencies() {
 
   sl.registerLazySingleton(() => SignUpWithEmailAndPasswordUseCase(sl()));
   sl.registerLazySingleton(() => VerifyEmailOTPUseCase(sl()));
-  sl.registerLazySingleton(() => ResendVerificationEmailUseCase(sl()));
+  //sl.registerLazySingleton(() => ResendVerificationEmailUseCase(sl()));
   sl.registerLazySingleton(() => SignInWithEmailAndPasswordUseCase(sl()));
   sl.registerLazySingleton(() => SignInWithGoogleUseCase(sl()));
   sl.registerLazySingleton(() => ResetPasswordUseCase(sl()));
@@ -52,19 +52,17 @@ void initAuthDependencies() {
   sl.registerLazySingleton(() => GetCurrentUserUseCase(sl()));
 
   sl.registerLazySingleton(() => UpdateMetricsUseCase(sl()));
-
   sl.registerFactory<AuthCubit>(
     () => AuthCubit(
-      sl(), // signUpWithEmailAndPasswordUseCase
-      sl(), // verifyEmailOTPUseCase
-      sl(), // resendVerificationEmailUseCase
-      sl(), // signInWithEmailAndPasswordUseCase
-      sl(), // signInWithGoogleUseCase
-      sl(), // signInWithFacebookUseCase
-      sl(), // resetPasswordUseCase
-      sl(), // signOutUseCase
-      sl(), // updatePasswordUseCase
-      sl(), // getCurrentUserUseCase
+      sl(), // SignUpWithEmailAndPasswordUseCase
+      sl(), // VerifyEmailOTPUseCase
+      sl(), // SignInWithEmailAndPasswordUseCase
+      sl(), // SignInWithGoogleUseCase
+      sl(), // ResetPasswordUseCase
+      sl(), // SignOutUseCase
+      sl(), // UpdatePasswordUseCase
+      sl(), // GetCurrentUserUseCase
+      sl(), // UpdateMetricsUseCase
     ),
   );
 }

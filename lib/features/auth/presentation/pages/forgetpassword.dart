@@ -59,11 +59,7 @@ class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Image.asset(
-                      'assets/Background.png',
-                      width: 100,
-                      height: 100,
-                    ),
+                    Image.asset('images/home.webp', width: 100, height: 100),
                     const SizedBox(height: 16),
                     const Text(
                       'Forget your password?',

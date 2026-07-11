@@ -18,7 +18,7 @@ import 'auth_state.dart';
 class AuthCubit extends Cubit<AuthState> {
   final SignUpWithEmailAndPasswordUseCase signUpWithEmailAndPasswordUseCase;
   final VerifyEmailOTPUseCase verifyEmailOTPUseCase;
-  final ResendVerificationEmailUseCase resendVerificationEmailUseCase;
+  // final ResendVerificationEmailUseCase resendVerificationEmailUseCase;
   final SignInWithEmailAndPasswordUseCase signInWithEmailAndPasswordUseCase;
   final SignInWithGoogleUseCase signInWithGoogleUseCase;
   final ResetPasswordUseCase resetPasswordUseCase;
@@ -30,7 +30,7 @@ class AuthCubit extends Cubit<AuthState> {
   AuthCubit(
     this.signUpWithEmailAndPasswordUseCase,
     this.verifyEmailOTPUseCase,
-    this.resendVerificationEmailUseCase,
+    //this.resendVerificationEmailUseCase,
     this.signInWithEmailAndPasswordUseCase,
     this.signInWithGoogleUseCase,
     this.resetPasswordUseCase,
@@ -77,16 +77,16 @@ class AuthCubit extends Cubit<AuthState> {
     );
   }
 
-  Future<void> resendVerificationEmail(String email) async {
-    emit(AuthLoading());
-    final result = await resendVerificationEmailUseCase(
-      ResendVerificationEmailParams(email: email),
-    );
-    result.fold(
-      (failure) => emit(AuthError(failure.errMessage)),
-      (_) => emit(AuthVerificationEmailSent()),
-    );
-  }
+  // Future<void> resendVerificationEmail(String email) async {
+  //   emit(AuthLoading());
+  //   final result = await resendVerificationEmailUseCase(
+  //     ResendVerificationEmailParams(email: email),
+  //   );
+  //   result.fold(
+  //     (failure) => emit(AuthError(failure.errMessage)),
+  //     (_) => emit(AuthVerificationEmailSent()),
+  //   );
+  // }
 
   Future<void> signInWithEmailAndPassword({
     required String email,

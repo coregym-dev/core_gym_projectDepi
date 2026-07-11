@@ -2,18 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_coffee/core/constans/appConstants.dart';
 import 'package:flutter_coffee/core/theme/app_color.dart';
 import 'package:flutter_coffee/core/theme/app_text_styles.dart';
+import 'package:flutter_coffee/core/utils/app_snackbars.dart';
 import 'package:flutter_coffee/features/profile/ui/widgets/about_info_tile.dart';
 import 'package:flutter_coffee/features/profile/ui/widgets/social_media_button.dart';
 
 class AboutUsScreen extends StatelessWidget {
   const AboutUsScreen({super.key});
 
-  // static void _openSocial(BuildContext context, String platform) {
-  //   AppSnackbars.showInfo(
-  //     context,
-  //     'Opening $platform profile for ${AppConstants.appName}',
-  //   );
-  // }
+  static void _openSocial(BuildContext context, String platform) {
+    AppSnackbars.showInfo(
+      context,
+      'Opening $platform profile for ${AppConstants.appName}',
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +48,7 @@ class AboutUsScreen extends StatelessWidget {
             ),
             Expanded(
               child: SingleChildScrollView(
-                padding: EdgeInsets.symmetric(
+                padding: const EdgeInsets.symmetric(
                   horizontal: AppConstants.screenHorizontalPadding,
                 ),
                 child: Column(
@@ -139,19 +140,19 @@ class AboutUsScreen extends StatelessWidget {
                     Row(
                       children: [
                         SocialMediaButton.instagram(
-                          //     onTap: () => _openSocial(context, 'Instagram'),
+                          onTap: () => _openSocial(context, 'Instagram'),
                         ),
                         const SizedBox(width: 16),
                         SocialMediaButton.facebook(
-                          //     onTap: () => _openSocial(context, 'Facebook'),
+                          onTap: () => _openSocial(context, 'Facebook'),
                         ),
                         const SizedBox(width: 16),
                         SocialMediaButton.twitter(
-                          //    onTap: () => _openSocial(context, 'Twitter'),
+                          onTap: () => _openSocial(context, 'Twitter'),
                         ),
                         const SizedBox(width: 16),
                         SocialMediaButton.youtube(
-                          //    onTap: () => _openSocial(context, 'YouTube'),
+                          onTap: () => _openSocial(context, 'YouTube'),
                         ),
                       ],
                     ),

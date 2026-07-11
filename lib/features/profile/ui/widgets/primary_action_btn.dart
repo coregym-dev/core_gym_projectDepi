@@ -6,13 +6,13 @@ import 'package:flutter_coffee/core/theme/app_text_styles.dart';
 
 class PrimaryActionButton extends StatelessWidget {
   final String label;
-  final VoidCallback? onPressed;
+ final void Function()? onTap;
   final bool isLoading;
 
   const PrimaryActionButton({
     super.key,
     required this.label,
-    this.onPressed,
+    this.onTap,
     this.isLoading = false,
   });
 
@@ -24,7 +24,7 @@ class PrimaryActionButton extends StatelessWidget {
         color: const Color.fromRGBO(223, 186, 38, 1),
         borderRadius: BorderRadius.circular(AppConstants.buttonBorderRadius),
         child: InkWell(
-          onTap: isLoading ? null : onPressed,
+          onTap: onTap,
           borderRadius: BorderRadius.circular(AppConstants.buttonBorderRadius),
           splashColor: AppColors.accentPressed.withValues(alpha: 0.3),
           child: Padding(
@@ -33,7 +33,7 @@ class PrimaryActionButton extends StatelessWidget {
                 ? const SizedBox(
                     height: 22,
                     width: 22,
-                    child: CupertinoActivityIndicator(color: Colors.white),
+                    child: CupertinoActivityIndicator(color: AppColors.accentColor),
                   )
                 : Text(
                     label,

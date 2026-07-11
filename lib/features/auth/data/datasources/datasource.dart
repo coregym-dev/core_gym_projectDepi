@@ -50,13 +50,13 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
 
   @override
   Future<void> saveUserDataToDatabase(UserModel user) async {
-    await supabaseClient.from('users').upsert(user.toJson());
+    await supabaseClient.from('profile').upsert(user.toJson());
   }
 
   @override
   Future<UserModel> getUserDataFromDatabase(String uid) async {
     final response = await supabaseClient
-        .from('users')
+        .from('profile')
         .select()
         .eq('id', uid)
         .single();

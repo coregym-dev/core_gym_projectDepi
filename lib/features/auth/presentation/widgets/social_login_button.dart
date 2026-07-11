@@ -17,13 +17,16 @@ class SocialLoginButton extends StatelessWidget {
     return InkWell(
       onTap: onTap,
       borderRadius: BorderRadius.circular(12),
-      splashColor: Colors.white.withOpacity(0.2),
+      splashColor: Colors.white.withValues(alpha: 0.2),
       child: Container(
         padding: const EdgeInsets.all(12),
         decoration: BoxDecoration(
-          color: Colors.white.withOpacity(0.05),
+          color: Colors.white.withValues(alpha: 0.05),
           borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: Colors.white.withOpacity(0.2), width: 1),
+          border: Border.all(
+            color: Colors.white.withValues(alpha: 0.2),
+            width: 1,
+          ),
         ),
         child: isloading
             ? Center(
@@ -32,7 +35,7 @@ class SocialLoginButton extends StatelessWidget {
                   strokeWidth: 2,
                 ),
               )
-            : Image.asset(iconPath, width: 32, height: 32),
+            : Image.asset("images/home.webp", width: 32, height: 32),
       ),
     );
   }

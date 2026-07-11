@@ -1,5 +1,4 @@
 import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -14,6 +13,7 @@ import 'package:flutter_coffee/features/auth/presentation/widgets/custom_main_bu
 import 'package:flutter_coffee/features/auth/presentation/widgets/customauthfield.dart';
 import 'package:flutter_coffee/features/auth/presentation/widgets/glass_container.dart';
 import 'package:flutter_coffee/features/auth/presentation/widgets/social_login_button.dart';
+import 'package:flutter_coffee/features/root_view.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -46,11 +46,7 @@ class _LoginPageState extends State<LoginPage> {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Image.asset(
-                      'assets/Background.png',
-                      width: 100,
-                      height: 100,
-                    ),
+                    Image.asset('images/home.webp', width: 100, height: 100),
                     const SizedBox(height: 16),
                     const Text(
                       'Welcome Back!',
@@ -125,7 +121,7 @@ class _LoginPageState extends State<LoginPage> {
                       children: [
                         Expanded(
                           child: Divider(
-                            color: Colors.white.withOpacity(0.2),
+                            color: Colors.white.withValues(alpha: 0.2),
                             thickness: 1,
                           ),
                         ),
@@ -141,7 +137,7 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                         Expanded(
                           child: Divider(
-                            color: Colors.white.withOpacity(0.2),
+                            color: Colors.white.withValues(alpha: 0.2),
                             thickness: 1,
                           ),
                         ),
@@ -154,7 +150,7 @@ class _LoginPageState extends State<LoginPage> {
                       children: [
                         SocialLoginButton(
                           isloading: state is AuthGoogleLoading,
-                          iconPath: 'assets/googel.png',
+                          iconPath: 'images/home.webp',
                           onTap: () {
                             context.read<AuthCubit>().signInWithGoogle();
                           },
@@ -209,9 +205,10 @@ class _LoginPageState extends State<LoginPage> {
                     backgroundColor: Colors.green,
                   ),
                 );
-                Navigator.pushReplacement(
+                Navigator.pushAndRemoveUntil(
                   context,
-                  MaterialPageRoute(builder: (context) => const HomePage()),
+                  MaterialPageRoute(builder: (context) => const RootView()),
+                  (route) => false,
                 );
               }
             },

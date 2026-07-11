@@ -103,21 +103,21 @@ class AuthRepositoryImpl implements AuthRepository {
     }
   }
 
-  @override
-  Future<Either<AuthFailure, void>> resendVerificationEmail(
-    String email,
-  ) async {
-    try {
-      await remoteDataSource.resendVerificationEmail(email);
-      return right(null);
-    } on ServerException catch (e) {
-      return left(AuthFailure(e.message));
-    } on CacheException catch (e) {
-      return left(AuthFailure(e.message));
-    } catch (e) {
-      return left(AuthFailure(e.toString()));
-    }
-  }
+  // @override
+  // Future<Either<AuthFailure, void>> resendVerificationEmail(
+  //   String email,
+  // ) async {
+  //   try {
+  //     await remoteDataSource.resendVerificationEmail(email);
+  //     return right(null);
+  //   } on ServerException catch (e) {
+  //     return left(AuthFailure(e.message));
+  //   } on CacheException catch (e) {
+  //     return left(AuthFailure(e.message));
+  //   } catch (e) {
+  //     return left(AuthFailure(e.toString()));
+  //   }
+  // }
 
   @override
   Future<Either<AuthFailure, UserEntity>> signInWithEmailAndPassword(
@@ -130,7 +130,7 @@ class AuthRepositoryImpl implements AuthRepository {
         password,
       );
       final userProfileModel = await userRemoteDataSource.getUserProfile(
-        userModel.id!,
+        userModel.id,
       );
       await localDataSource.cacheUserData(userProfileModel);
       return right(userProfileModel);
@@ -250,5 +250,11 @@ class AuthRepositoryImpl implements AuthRepository {
     } catch (e) {
       return left(const AuthFailure('حدث خطأ غير متوقع أثناء حفظ البيانات.'));
     }
+  }
+
+  @override
+  Future<Either<AuthFailure, void>> resendVerificationEmail(String email) {
+    // TODO: implement resendVerificationEmail
+    throw UnimplementedError();
   }
 }

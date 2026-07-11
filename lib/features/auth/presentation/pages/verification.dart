@@ -73,7 +73,7 @@ class _VerificationPageState extends State<VerificationPage> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Image.asset(
-                      'assets/Background.png',
+                      'images/home.webp',
                       width: 100.w,
                       height: 100.h,
                     ),

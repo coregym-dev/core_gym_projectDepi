@@ -1,17 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/material.dart';
+
 import 'package:flutter_coffee/core/constans/appConstants.dart';
 import 'package:flutter_coffee/core/theme/app_color.dart';
 import 'package:flutter_coffee/core/theme/app_text_styles.dart';
-import 'package:flutter_coffee/core/utils/AppValidators.dart';
+
 import 'package:flutter_coffee/core/utils/app_snackbars.dart';
-import 'package:flutter_coffee/core/widget/app_state.dart';
-import 'package:flutter_coffee/features/profile/ui/widgets/about_info_tile.dart';
-import 'package:flutter_coffee/features/profile/ui/widgets/edit_profile_screen.dart';
-import 'package:flutter_coffee/features/profile/ui/widgets/gender_dropdown_field.dart';
-import 'package:flutter_coffee/features/profile/ui/widgets/labeled_input_field.dart';
+
 import 'package:flutter_coffee/features/profile/ui/widgets/primary_action_btn.dart';
-import 'package:flutter_coffee/features/profile/ui/widgets/profile_avatar.dart';
+
 import 'package:flutter_coffee/features/profile/ui/widgets/profile_screen.dart';
 
 class HelpSupportScreen extends StatelessWidget {
@@ -83,7 +79,7 @@ class HelpSupportScreen extends StatelessWidget {
               const SizedBox(height: 24),
               PrimaryActionButton(
                 label: 'Contact Support',
-                onPressed: () {
+                onTap: () {
                   AppSnackbars.showInfo(
                     context,
                     'Support request saved locally. Email: support@gymapp.com',
