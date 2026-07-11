@@ -37,6 +37,7 @@ class UserRemoteDataSourceImpl implements UserRemoteDataSource {
         'current_system_id': user.currentSystemId,
         'image_url': user.imageUrl,
       });
+      print(user.id);
     } catch (e) {
       throw ServerException('Failed to save user data: $e');
     }

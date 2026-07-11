@@ -19,6 +19,7 @@ abstract class AuthRemoteDataSource {
   Future<void> updatePassword(String newPassword);
   Future<void> signOut();
   User? getCurrentSupabaseUser();
+  Future<bool> isLoggedIn();
 }
 
 class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
@@ -50,13 +51,13 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
 
   @override
   Future<void> saveUserDataToDatabase(UserModel user) async {
-    await supabaseClient.from('profile').upsert(user.toJson());
+    await supabaseClient.from('users').upsert(user.toJson());
   }
 
   @override
   Future<UserModel> getUserDataFromDatabase(String uid) async {
     final response = await supabaseClient
-        .from('profile')
+        .from('users')
         .select()
         .eq('id', uid)
         .single();
@@ -144,6 +145,11 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   @override
   Future<void> updatePassword(String newPassword) async {
     await supabaseClient.auth.updateUser(UserAttributes(password: newPassword));
+  }
+
+  @override
+  Future<bool> isLoggedIn() async {
+    return supabaseClient.auth.currentUser != null;
   }
 
   @override

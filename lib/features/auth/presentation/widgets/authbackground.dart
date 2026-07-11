@@ -10,7 +10,7 @@ class AuthBackground extends StatelessWidget {
       body: Stack(
         children: [
           Image.asset(
-            'images/home.webp',
+            'assets/full_screen_background_image_for_a_fitness_app._a_muscular_bodybuilder_training.png',
             fit: BoxFit.cover,
             width: double.infinity,
             height: double.infinity,

@@ -1,4 +1,5 @@
 import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -8,6 +9,7 @@ import 'package:flutter_coffee/features/auth/presentation/cubit/auth_state.dart'
 import 'package:flutter_coffee/features/auth/presentation/pages/forgetpassword.dart';
 import 'package:flutter_coffee/features/auth/presentation/pages/home.dart';
 import 'package:flutter_coffee/features/auth/presentation/pages/signup.dart';
+import 'package:flutter_coffee/features/auth/presentation/pages/user_metrics_page.dart';
 import 'package:flutter_coffee/features/auth/presentation/widgets/authbackground.dart';
 import 'package:flutter_coffee/features/auth/presentation/widgets/custom_main_button.dart';
 import 'package:flutter_coffee/features/auth/presentation/widgets/customauthfield.dart';
@@ -46,7 +48,11 @@ class _LoginPageState extends State<LoginPage> {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Image.asset('images/home.webp', width: 100, height: 100),
+                    Image.asset(
+                      'assets/Background.png',
+                      width: 100,
+                      height: 100,
+                    ),
                     const SizedBox(height: 16),
                     const Text(
                       'Welcome Back!',
@@ -121,7 +127,7 @@ class _LoginPageState extends State<LoginPage> {
                       children: [
                         Expanded(
                           child: Divider(
-                            color: Colors.white.withValues(alpha: 0.2),
+                            color: Colors.white.withOpacity(0.2),
                             thickness: 1,
                           ),
                         ),
@@ -137,7 +143,7 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                         Expanded(
                           child: Divider(
-                            color: Colors.white.withValues(alpha: 0.2),
+                            color: Colors.white.withOpacity(0.2),
                             thickness: 1,
                           ),
                         ),
@@ -150,7 +156,7 @@ class _LoginPageState extends State<LoginPage> {
                       children: [
                         SocialLoginButton(
                           isloading: state is AuthGoogleLoading,
-                          iconPath: 'images/home.webp',
+                          iconPath: 'assets/googel.png',
                           onTap: () {
                             context.read<AuthCubit>().signInWithGoogle();
                           },
@@ -198,17 +204,23 @@ class _LoginPageState extends State<LoginPage> {
                     backgroundColor: Colors.redAccent,
                   ),
                 );
-              } else if (state is AuthLoadedWithuser) {
+              }
+              if (state is AuthLoadedWithuser) {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     content: Text('welcome ya ${state.user.name}'),
                     backgroundColor: Colors.green,
                   ),
                 );
-                Navigator.pushAndRemoveUntil(
+                Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(builder: (context) => const RootView()),
-                  (route) => false,
+                );
+              }
+              if (state is AuthGoogleFirstLogin) {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (_) => UserMetricsPage()),
                 );
               }
             },

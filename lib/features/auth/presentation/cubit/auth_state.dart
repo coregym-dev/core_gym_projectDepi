@@ -6,14 +6,18 @@ class AuthInitial extends AuthState {}
 
 class AuthLoading extends AuthState {}
 
-class AuthGoogleLoading extends AuthState {}
+class AuthGoogleFirstLogin extends AuthState {
+  final UserEntity user;
 
-class AuthFacebookLoading extends AuthState {}
+  AuthGoogleFirstLogin(this.user);
+}
 
 class AuthLoadedWithuser extends AuthState {
   final UserEntity user;
   AuthLoadedWithuser(this.user);
 }
+
+class AuthGoogleLoading extends AuthState {}
 
 class AuthSignUpSuccessFully extends AuthState {}
 

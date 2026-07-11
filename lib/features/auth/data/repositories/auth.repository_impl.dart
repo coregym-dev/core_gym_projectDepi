@@ -7,6 +7,7 @@ import 'package:flutter_coffee/core/errors/excepetions.dart';
 import 'package:flutter_coffee/features/auth/data/datasources/auth_local_data_source.dart';
 import 'package:flutter_coffee/features/auth/data/datasources/datasource.dart';
 import 'package:flutter_coffee/features/auth/data/datasources/user_remote_data_source.dart';
+import 'package:flutter_coffee/features/auth/data/models/googel_model.dart';
 import 'package:flutter_coffee/features/auth/data/models/user_model.dart';
 import 'package:flutter_coffee/features/auth/domain/entiteis/userentitey.dart';
 import 'package:flutter_coffee/features/auth/domain/repositories/auth.repository.dart';
@@ -70,7 +71,9 @@ class AuthRepositoryImpl implements AuthRepository {
         name: username,
         phone: phoneNumber,
       );
+      print("Auth User ID: ${userModel.id}");
       await userRemoteDataSource.createUserProfile(userProfileModel);
+      print("Auth User ID: ${userModel.id}");
       await localDataSource.cacheUserData(userProfileModel);
       return right(userProfileModel);
     } on ServerException catch (e) {
@@ -103,21 +106,21 @@ class AuthRepositoryImpl implements AuthRepository {
     }
   }
 
-  // @override
-  // Future<Either<AuthFailure, void>> resendVerificationEmail(
-  //   String email,
-  // ) async {
-  //   try {
-  //     await remoteDataSource.resendVerificationEmail(email);
-  //     return right(null);
-  //   } on ServerException catch (e) {
-  //     return left(AuthFailure(e.message));
-  //   } on CacheException catch (e) {
-  //     return left(AuthFailure(e.message));
-  //   } catch (e) {
-  //     return left(AuthFailure(e.toString()));
-  //   }
-  // }
+  @override
+  Future<Either<AuthFailure, void>> resendVerificationEmail(
+    String email,
+  ) async {
+    try {
+      await remoteDataSource.resendVerificationEmail(email);
+      return right(null);
+    } on ServerException catch (e) {
+      return left(AuthFailure(e.message));
+    } on CacheException catch (e) {
+      return left(AuthFailure(e.message));
+    } catch (e) {
+      return left(AuthFailure(e.toString()));
+    }
+  }
 
   @override
   Future<Either<AuthFailure, UserEntity>> signInWithEmailAndPassword(
@@ -130,7 +133,7 @@ class AuthRepositoryImpl implements AuthRepository {
         password,
       );
       final userProfileModel = await userRemoteDataSource.getUserProfile(
-        userModel.id,
+        userModel.id!,
       );
       await localDataSource.cacheUserData(userProfileModel);
       return right(userProfileModel);
@@ -144,7 +147,7 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<Either<AuthFailure, UserEntity>> signInWithGoogle() async {
+  Future<Either<AuthFailure, GoogleSignInResult>> signInWithGoogle() async {
     try {
       await remoteDataSource.signInWithGoogle();
       final user = remoteDataSource.getCurrentSupabaseUser();
@@ -159,7 +162,9 @@ class AuthRepositoryImpl implements AuthRepository {
         );
 
         await localDataSource.cacheUserData(existingProfile);
-        return right(existingProfile);
+        return right(
+          GoogleSignInResult(user: existingProfile, isNewUser: false),
+        );
       } catch (e) {
         final newUserModel = UserModel(
           id: user.id,
@@ -167,10 +172,12 @@ class AuthRepositoryImpl implements AuthRepository {
           name: user.userMetadata?['full_name'] ?? 'Google User',
           phone: '',
         );
+        print(user?.id);
+        print(user?.email);
 
         await userRemoteDataSource.createUserProfile(newUserModel);
         await localDataSource.cacheUserData(newUserModel);
-        return right(newUserModel);
+        return right(GoogleSignInResult(user: newUserModel, isNewUser: true));
       }
     } on ServerException catch (e) {
       return left(AuthFailure(e.message));
@@ -224,6 +231,11 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
+  Future<bool> isLoggedIn() async {
+    return await remoteDataSource.isLoggedIn();
+  }
+
+  @override
   Future<Either<AuthFailure, void>> updateUserMetrics({
     required String uid,
     required double height,
@@ -250,11 +262,5 @@ class AuthRepositoryImpl implements AuthRepository {
     } catch (e) {
       return left(const AuthFailure('حدث خطأ غير متوقع أثناء حفظ البيانات.'));
     }
-  }
-
-  @override
-  Future<Either<AuthFailure, void>> resendVerificationEmail(String email) {
-    // TODO: implement resendVerificationEmail
-    throw UnimplementedError();
   }
 }

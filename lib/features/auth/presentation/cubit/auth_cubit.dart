@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_coffee/features/auth/domain/usecases/isloggedin.dart';
 import 'package:flutter_coffee/features/auth/domain/usecases/sign_up_with_email_and_password_use_case.dart';
 import 'package:flutter_coffee/features/auth/domain/usecases/user_metrics_use_case.dart';
 import 'package:flutter_coffee/features/auth/domain/usecases/verify_email_otp_use_case.dart';
@@ -18,7 +19,7 @@ import 'auth_state.dart';
 class AuthCubit extends Cubit<AuthState> {
   final SignUpWithEmailAndPasswordUseCase signUpWithEmailAndPasswordUseCase;
   final VerifyEmailOTPUseCase verifyEmailOTPUseCase;
-  // final ResendVerificationEmailUseCase resendVerificationEmailUseCase;
+  final ResendVerificationEmailUseCase resendVerificationEmailUseCase;
   final SignInWithEmailAndPasswordUseCase signInWithEmailAndPasswordUseCase;
   final SignInWithGoogleUseCase signInWithGoogleUseCase;
   final ResetPasswordUseCase resetPasswordUseCase;
@@ -26,11 +27,12 @@ class AuthCubit extends Cubit<AuthState> {
   final UpdatePasswordUseCase updatePasswordUseCase;
   final GetCurrentUserUseCase getCurrentUserUseCase;
   final UpdateMetricsUseCase updateMetricsUseCase;
+  final IsLoggedInUseCase isLoggedInUseCase;
 
   AuthCubit(
     this.signUpWithEmailAndPasswordUseCase,
     this.verifyEmailOTPUseCase,
-    //this.resendVerificationEmailUseCase,
+    this.resendVerificationEmailUseCase,
     this.signInWithEmailAndPasswordUseCase,
     this.signInWithGoogleUseCase,
     this.resetPasswordUseCase,
@@ -38,6 +40,7 @@ class AuthCubit extends Cubit<AuthState> {
     this.updatePasswordUseCase,
     this.getCurrentUserUseCase,
     this.updateMetricsUseCase,
+    this.isLoggedInUseCase,
   ) : super(AuthInitial());
 
   Future<void> signUpWithEmailAndPassword({
@@ -77,16 +80,16 @@ class AuthCubit extends Cubit<AuthState> {
     );
   }
 
-  // Future<void> resendVerificationEmail(String email) async {
-  //   emit(AuthLoading());
-  //   final result = await resendVerificationEmailUseCase(
-  //     ResendVerificationEmailParams(email: email),
-  //   );
-  //   result.fold(
-  //     (failure) => emit(AuthError(failure.errMessage)),
-  //     (_) => emit(AuthVerificationEmailSent()),
-  //   );
-  // }
+  Future<void> resendVerificationEmail(String email) async {
+    emit(AuthLoading());
+    final result = await resendVerificationEmailUseCase(
+      ResendVerificationEmailParams(email: email),
+    );
+    result.fold(
+      (failure) => emit(AuthError(failure.errMessage)),
+      (_) => emit(AuthVerificationEmailSent()),
+    );
+  }
 
   Future<void> signInWithEmailAndPassword({
     required String email,
@@ -104,11 +107,16 @@ class AuthCubit extends Cubit<AuthState> {
 
   Future<void> signInWithGoogle() async {
     emit(AuthGoogleLoading());
+
     final result = await signInWithGoogleUseCase();
-    result.fold(
-      (failure) => emit(AuthError(failure.errMessage)),
-      (user) => emit(AuthLoadedWithuser(user)),
-    );
+
+    result.fold((failure) => emit(AuthError(failure.errMessage)), (result) {
+      if (result.isNewUser) {
+        emit(AuthGoogleFirstLogin(result.user));
+      } else {
+        emit(AuthLoadedWithuser(result.user));
+      }
+    });
   }
 
   Future<void> resetPassword(String email) async {
@@ -129,6 +137,10 @@ class AuthCubit extends Cubit<AuthState> {
       (failure) => emit(AuthError(failure.errMessage)),
       (_) => emit(AuthsignOutSuccessfully()),
     );
+  }
+
+  Future<bool> checkAuthStatus() async {
+    return await isLoggedInUseCase();
   }
 
   Future<void> updateUserMetrics({

@@ -4,6 +4,7 @@ import 'package:flutter_coffee/features/auth/data/datasources/user_remote_data_s
 import 'package:flutter_coffee/features/auth/data/repositories/auth.repository_impl.dart';
 import 'package:flutter_coffee/features/auth/domain/repositories/auth.repository.dart';
 import 'package:flutter_coffee/features/auth/domain/usecases/get_current_user_use_case.dart';
+import 'package:flutter_coffee/features/auth/domain/usecases/isloggedin.dart';
 import 'package:flutter_coffee/features/auth/domain/usecases/resend_verification_email_use_case.dart';
 import 'package:flutter_coffee/features/auth/domain/usecases/reset_password_use_case.dart';
 import 'package:flutter_coffee/features/auth/domain/usecases/sign_in_with_email_and_password_use_case.dart';
@@ -43,7 +44,7 @@ void initAuthDependencies() {
 
   sl.registerLazySingleton(() => SignUpWithEmailAndPasswordUseCase(sl()));
   sl.registerLazySingleton(() => VerifyEmailOTPUseCase(sl()));
-  //sl.registerLazySingleton(() => ResendVerificationEmailUseCase(sl()));
+  sl.registerLazySingleton(() => ResendVerificationEmailUseCase(sl()));
   sl.registerLazySingleton(() => SignInWithEmailAndPasswordUseCase(sl()));
   sl.registerLazySingleton(() => SignInWithGoogleUseCase(sl()));
   sl.registerLazySingleton(() => ResetPasswordUseCase(sl()));
@@ -52,17 +53,21 @@ void initAuthDependencies() {
   sl.registerLazySingleton(() => GetCurrentUserUseCase(sl()));
 
   sl.registerLazySingleton(() => UpdateMetricsUseCase(sl()));
+  sl.registerLazySingleton(() => IsLoggedInUseCase(sl()));
+
   sl.registerFactory<AuthCubit>(
     () => AuthCubit(
-      sl(), // SignUpWithEmailAndPasswordUseCase
-      sl(), // VerifyEmailOTPUseCase
-      sl(), // SignInWithEmailAndPasswordUseCase
-      sl(), // SignInWithGoogleUseCase
-      sl(), // ResetPasswordUseCase
-      sl(), // SignOutUseCase
-      sl(), // UpdatePasswordUseCase
-      sl(), // GetCurrentUserUseCase
-      sl(), // UpdateMetricsUseCase
+      sl(), // signUpWithEmailAndPasswordUseCase
+      sl(), // verifyEmailOTPUseCase
+      sl(), // resendVerificationEmailUseCase
+      sl(), // signInWithEmailAndPasswordUseCase
+      sl(), // signInWithGoogleUseCase
+      sl(), // signInWithFacebookUseCase
+      sl(), // resetPasswordUseCase
+      sl(), // signOutUseCase
+      sl(), // updatePasswordUseCase
+      sl(), // getCurrentUserUseCase
+      sl(), // isLoggedInUseCase
     ),
   );
 }

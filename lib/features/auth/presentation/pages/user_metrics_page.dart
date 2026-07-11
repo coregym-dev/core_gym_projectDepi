@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_coffee/features/root_view.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter_coffee/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:flutter_coffee/features/auth/presentation/cubit/auth_state.dart';
@@ -70,7 +71,7 @@ class _UserMetricsPageState extends State<UserMetricsPage> {
                 );
                 Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(builder: (context) => const HomePage()),
+                  MaterialPageRoute(builder: (context) => const RootView()),
                 );
               }
             },
